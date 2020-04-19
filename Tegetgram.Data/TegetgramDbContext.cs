@@ -12,6 +12,20 @@ namespace Tegetgram.Data
         {
         }
 
+        public DbSet<TegetgramUser> TegetgramUsers { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<UserBlocking> UserBlockings { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseLazyLoadingProxies();
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<TegetgramUser>()
@@ -43,11 +57,5 @@ namespace Tegetgram.Data
 
             base.OnModelCreating(builder);
         }
-
-        public DbSet<TegetgramUser> TegetgramUsers { get; set; }
-
-        public DbSet<Message> Messages { get; set; }
-
-        public DbSet<UserBlocking> UserBlockings { get; set; }
     }
 }

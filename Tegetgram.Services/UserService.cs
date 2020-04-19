@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tegetgram.Data;
 using Tegetgram.Data.Entities;
+using Tegetgram.Services.DTOs;
 using Tegetgram.Services.Interfaces;
 
 namespace Tegetgram.Services
@@ -40,6 +41,11 @@ namespace Tegetgram.Services
                 BlockedId = blockedUserId
             });
             await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<TegetgramUserDTO> GetUser(string userName)
+        {
+            throw new NotImplementedException();
         }
 
         public Task UnblockUser(string forUserName, string blockUserName)

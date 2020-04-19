@@ -14,7 +14,7 @@ namespace Tegetgram.Api.Controllers
     [Authorize]
     [ValidateModel]
     [ApiController]
-    [Route("api/[controller]/{id}")]
+    [Route("api/[controller]")]
     [ServiceFilter(typeof(GlobalExceptionFilter))]
     public class MessagesController : ControllerBase
     {
@@ -34,7 +34,7 @@ namespace Tegetgram.Api.Controllers
             return Ok(messages);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [ActionName("GetMessage")]
         public async Task<IActionResult> Get(Guid id)
         {

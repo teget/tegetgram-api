@@ -44,6 +44,13 @@ namespace Tegetgram.Api.Controllers
             _options = optionsAccessor.Value;
         }
 
+        //[HttpGet("{username?}")]
+        //[ActionName("GetUser")]
+        //public async Task<IActionResult> Get(string userName)
+        //{
+
+        //}
+
         [AllowAnonymous]
         [HttpGet]
         [ActionName("Authenticate")]
