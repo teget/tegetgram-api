@@ -15,6 +15,7 @@ using Tegetgram.Api.Filters;
 using Tegetgram.Api.Models;
 using Tegetgram.Data.Entities;
 using Tegetgram.Services.Interfaces;
+using Tegetgram.Services.DTOs;
 
 namespace Tegetgram.Api.Controllers
 {
@@ -42,6 +43,15 @@ namespace Tegetgram.Api.Controllers
             _userService = userService;
             _logger = logger;
             _options = optionsAccessor.Value;
+        }
+
+        [HttpGet("{username?}")]
+        [ActionName("GetUser")]
+        public async Task<IActionResult> Get(string userName)
+        {
+            string askingUserName = User.Identity.Name;
+            TegetgramUserDTO user = await _userService.GetUser(askingUserName, userName);
+            return Ok(user);
         }
 
         [AllowAnonymous]
