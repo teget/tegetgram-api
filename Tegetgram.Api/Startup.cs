@@ -63,7 +63,9 @@ namespace Tegetgram.Api
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IActivityLogger, ActivityLogger>();
             services.AddScoped<GlobalExceptionFilter>();
+            services.AddScoped<LogAttribute>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

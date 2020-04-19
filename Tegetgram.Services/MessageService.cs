@@ -29,7 +29,7 @@ namespace Tegetgram.Services
             if (message == null)
                 throw new ApplicationException($"User {userName} does not have a message with the id {messageId}.");
 
-            message.IsNew = false;
+            message.IsRead = true;
             message.ReadOn = DateTime.Now;
 
             await _dbContext.SaveChangesAsync();
@@ -69,7 +69,7 @@ namespace Tegetgram.Services
 
             var telegraaf = new Message
             {
-                IsNew = true,
+                IsRead = false,
                 RecepientId = recepientId,
                 SenderId = senderId,
                 SentOn = DateTime.Now,

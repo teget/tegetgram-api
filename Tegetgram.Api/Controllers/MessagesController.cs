@@ -16,6 +16,7 @@ namespace Tegetgram.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [ServiceFilter(typeof(GlobalExceptionFilter))]
+    [ServiceFilter(typeof(LogAttribute))]
     public class MessagesController : ControllerBase
     {
         private readonly IMessageService _messageService;

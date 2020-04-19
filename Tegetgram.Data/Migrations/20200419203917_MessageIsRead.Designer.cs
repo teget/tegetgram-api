@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tegetgram.Data;
 
 namespace Tegetgram.Data.Migrations
 {
     [DbContext(typeof(TegetgramDbContext))]
-    partial class TegetgramDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200419203917_MessageIsRead")]
+    partial class MessageIsRead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
