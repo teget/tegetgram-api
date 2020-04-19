@@ -14,6 +14,6 @@ public class ApiUser : IdentityUser
             this.TegetgramUser = new TegetgramUser();
         }
 
-        public TegetgramUser TegetgramUser { get; set; }
+        public virtual TegetgramUser TegetgramUser { get; set; }
     }
 }

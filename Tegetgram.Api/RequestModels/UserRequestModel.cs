@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Tegetgram.Api.DTOs
+namespace Tegetgram.Api.RequestModels
 {
-    public class UserDTO
+    public class UserRequestModel
     {
         [Required]
         public string UserName { get; set; }

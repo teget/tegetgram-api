@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -60,16 +61,16 @@ namespace Tegetgram.Api
                 };
             });
 
-            // App Services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddScoped<GlobalExceptionFilter>();
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMapper mapper)
         {
             if (env.IsDevelopment())
             {
@@ -79,6 +80,8 @@ namespace Tegetgram.Api
             {
                 app.UseHsts();
             }
+
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
