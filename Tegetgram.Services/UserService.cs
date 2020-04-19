@@ -16,6 +16,18 @@ namespace Tegetgram.Services
         {
         }
 
+        public async Task<TegetgramUserDTO> GetUser(string askingUserName, string userName)
+        {
+            var userQuery = _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == userName);
+            if (userQuery.Any())
+                throw new ApplicationException($"User {userName} could not be found");
+
+            if (askingUserName != userName)
+                return await _mapper.ProjectTo<TegetgramUserDTO>(userQuery, null, x => x.UserName).SingleOrDefaultAsync();
+            else
+                return _mapper.Map<TegetgramUserDTO>(await userQuery.SingleOrDefaultAsync());
+        }
+
         public async Task BlockUser(string forUserName, string blockUserName)
         {
             if (String.Equals(forUserName, blockUserName))
@@ -24,8 +36,8 @@ namespace Tegetgram.Services
             Guid blockingUserId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == forUserName)
                 .Select(u => u.Id)
                 .SingleOrDefaultAsync();
-            (Guid blockedUserId, string blockedUserName) = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == blockUserName)
-                .Select(u => new Tuple<Guid, string>(u.Id, u.Owner.UserName))
+            Guid blockedUserId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == blockUserName)
+                .Select(u => u.Id)
                 .SingleOrDefaultAsync();
 
             if (blockedUserId == null)
@@ -43,14 +55,31 @@ namespace Tegetgram.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<TegetgramUserDTO> GetUser(string userName)
+        public async Task UnblockUser(string forUserName, string unblockUserName)
         {
-            throw new NotImplementedException();
-        }
+            Guid blockingUserId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == forUserName)
+                .Select(u => u.Id)
+                .SingleOrDefaultAsync();
+            Guid unblockedUserId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == unblockUserName)
+                .Select(u => u.Id)
+                .SingleOrDefaultAsync();
 
-        public Task UnblockUser(string forUserName, string blockUserName)
-        {
-            throw new NotImplementedException();
+            if (unblockedUserId == null)
+                throw new ApplicationException($"User {unblockUserName} could not be found.");
+            if (blockingUserId == null)
+                throw new ApplicationException($"User {forUserName} could not be found.");
+
+            if (_dbContext.UserBlockings.Any(b => b.BlockerId == blockingUserId && b.BlockedId == unblockedUserId))
+            {
+                UserBlocking blocking = new UserBlocking
+                {
+                    BlockerId = blockingUserId,
+                    BlockedId = unblockedUserId
+                };
+
+                _dbContext.Remove<UserBlocking>(blocking);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }
