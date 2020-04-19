@@ -1,0 +1,33 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Services", "Tegetgram.Services\Tegetgram.Services.csproj", "{9C8DBB9C-B4DB-4684-8BB4-E415B75C04D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Data", "Tegetgram.Data\Tegetgram.Data.csproj", "{F5631673-1997-4C66-B3D0-F1A2B237F47C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Api", "Tegetgram.Api\Tegetgram.Api.csproj", "{66E3CB8B-1451-4C7C-A528-004585EB532B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C8DBB9C-B4DB-4684-8BB4-E415B75C04D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C8DBB9C-B4DB-4684-8BB4-E415B75C04D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C8DBB9C-B4DB-4684-8BB4-E415B75C04D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C8DBB9C-B4DB-4684-8BB4-E415B75C04D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5631673-1997-4C66-B3D0-F1A2B237F47C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5631673-1997-4C66-B3D0-F1A2B237F47C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5631673-1997-4C66-B3D0-F1A2B237F47C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5631673-1997-4C66-B3D0-F1A2B237F47C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
+	EndGlobalSection
+EndGlobal
