@@ -45,7 +45,7 @@ namespace Tegetgram.Api.Controllers
             _options = optionsAccessor.Value;
         }
 
-        [HttpGet("{username?}")]
+        [HttpGet("{username}")]
         [ActionName("GetUser")]
         public async Task<IActionResult> Get(string userName)
         {
@@ -80,7 +80,13 @@ namespace Tegetgram.Api.Controllers
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             };
 
-            return Ok(new { access_token = tokenHandler.CreateToken(descriptor) });
+            TegetgramUserDTO user = await _userService.GetUser(apiUser.UserName, apiUser.UserName);
+
+            return Ok(new
+            {
+                access_token = tokenHandler.CreateToken(descriptor),
+                user = user
+            });
         }
 
         [AllowAnonymous]
@@ -109,7 +115,13 @@ namespace Tegetgram.Api.Controllers
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             };
 
-            return Ok(new { access_token = tokenHandler.CreateToken(descriptor) });
+            TegetgramUserDTO user = await _userService.GetUser(apiUser.UserName, apiUser.UserName);
+
+            return Ok(new
+            {
+                access_token = tokenHandler.CreateToken(descriptor),
+                user = user
+            });
         }
 
         [HttpPut("{username}/block")]

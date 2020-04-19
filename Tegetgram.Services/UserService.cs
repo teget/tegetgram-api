@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Tegetgram.Data;
 using Tegetgram.Data.Entities;
@@ -18,14 +19,17 @@ namespace Tegetgram.Services
 
         public async Task<TegetgramUserDTO> GetUser(string askingUserName, string userName)
         {
-            var userQuery = _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == userName);
-            if (userQuery.Any())
+            TegetgramUser user = await _dbContext.TegetgramUsers.SingleOrDefaultAsync(u => u.Owner.UserName == userName);
+            if (user == null)
                 throw new ApplicationException($"User {userName} could not be found");
 
-            if (askingUserName != userName)
-                return await _mapper.ProjectTo<TegetgramUserDTO>(userQuery, null, x => x.UserName).SingleOrDefaultAsync();
-            else
-                return _mapper.Map<TegetgramUserDTO>(await userQuery.SingleOrDefaultAsync());
+            if (askingUserName == userName)
+                return _mapper.Map<TegetgramUserDTO>(user);
+
+            return new TegetgramUserDTO
+            {
+                UserName = user.Owner.UserName
+            };
         }
 
         public async Task BlockUser(string forUserName, string blockUserName)
