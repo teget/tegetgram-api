@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tegetgram.Data;
 using Tegetgram.Data.Entities;
+using Tegetgram.Services.DTOs;
 using Tegetgram.Services.Interfaces;
 
 namespace Tegetgram.Services
 {
     public class MessageService : BaseService, IMessageService
     {
-        public MessageService(TegetgramDbContext dbContext) : base(dbContext)
+        public MessageService(TegetgramDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
-        public async Task<ICollection<Message>> GetMessages(string userName)
+        public async Task<MessageDTO> GetMessage(string userName, Guid messageId)
         {
             Guid userId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == userName)
                 .Select(u => u.Id)
@@ -23,9 +25,29 @@ namespace Tegetgram.Services
             if (userId == null)
                 throw new ApplicationException($"User {userName} could not be found.");
 
-            List<Message> messages = await _dbContext.Messages.Where(m => m.RecepientId == userId || m.SenderId == userId).ToListAsync(); // should make get messages read first, maybee -YA
+            Message message = await _dbContext.Messages.SingleOrDefaultAsync(m => m.Id == messageId && (m.RecepientId == userId || m.SenderId == userId));
+            if (message == null)
+                throw new ApplicationException($"User {userName} does not have a message with the id {messageId}.");
 
-            return messages;
+            message.IsNew = false;
+            message.ReadOn = DateTime.Now;
+
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<MessageDTO>(message);
+        }
+
+        public async Task<ICollection<MessageItemDTO>> GetMessages(string userName)
+        {
+            Guid userId = await _dbContext.TegetgramUsers.Where(u => u.Owner.UserName == userName)
+                .Select(u => u.Id)
+                .SingleOrDefaultAsync();
+            if (userId == null)
+                throw new ApplicationException($"User {userName} could not be found.");
+
+            ICollection<Message> messages = await _dbContext.Messages.Where(m => m.RecepientId == userId || m.SenderId == userId).ToListAsync();
+
+            return _mapper.Map<ICollection<MessageItemDTO>>(messages);
         }
 
         public async Task SendMessage(string fromUserName, string toUserName, string message)

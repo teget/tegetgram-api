@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tegetgram.Data;
 using Tegetgram.Data.Entities;
@@ -10,7 +11,7 @@ namespace Tegetgram.Services
 {
     public class UserService : BaseService, IUserService
     {
-        public UserService(TegetgramDbContext dbContext) : base(dbContext)
+        public UserService(TegetgramDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 

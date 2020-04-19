@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using Tegetgram.Api.DTOs;
+using Tegetgram.Api.RequestModels;
 using Tegetgram.Api.Filters;
 using Tegetgram.Api.Models;
 using Tegetgram.Data.Entities;
@@ -47,7 +47,7 @@ namespace Tegetgram.Api.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ActionName("Authenticate")]
-        public async Task<IActionResult> Get([FromBody] UserDTO credentials)
+        public async Task<IActionResult> Get([FromBody] UserRequestModel credentials)
         {
             ApiUser apiUser = await _userManager.FindByNameAsync(credentials.UserName);
             if (apiUser == null)
@@ -76,7 +76,7 @@ namespace Tegetgram.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ActionName("Register")]
-        public async Task<IActionResult> Post([FromBody] UserDTO credentials)
+        public async Task<IActionResult> Post([FromBody] UserRequestModel credentials)
         {
             ApiUser apiUser = new ApiUser(credentials.UserName);
             var result = await _userManager.CreateAsync(apiUser, credentials.Password);
