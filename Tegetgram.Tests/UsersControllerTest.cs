@@ -11,6 +11,7 @@ using Tegetgram.Api.Controllers;
 using Tegetgram.Api.Models;
 using Tegetgram.Api.RequestModels;
 using Tegetgram.Data.Entities;
+using Tegetgram.Services.DTOs;
 using Tegetgram.Services.Interfaces;
 using Xunit;
 
@@ -21,16 +22,30 @@ namespace Tegetgram.Tests
         [Fact]
         public async Task GetUser_Happy()
         {
+            IOptions<JWTSettings> options = Options.Create(new JWTSettings
+            {
+                SecretKey = "myverysecretkeyofsecrets",
+                Issuer = "theissuer"
+            });
+            var userStore = new Mock<IUserStore<ApiUser>>();
+            var userManager = new Mock<UserManager<ApiUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            var contextAccessor = new Mock<IHttpContextAccessor>();
+            var userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<ApiUser>>();
+            var signInManager = new Mock<SignInManager<ApiUser>>(userManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null);
             var userService = new Mock<IUserService>();
+
+            var controller = new UsersController(userManager.Object, signInManager.Object, userService.Object, null, options);
             var userName = "TegetTest";
-            var user = new GenericPrincipal(new GenericIdentity(userName), new string[] { });
-            var httpContext = new DefaultHttpContext() { User = user };
-            var controllerContext = new ControllerContext() { HttpContext = httpContext };
-            var controller = new UsersController(null, null, userService.Object, null, null) { ControllerContext = controllerContext };
+            var user = new ClaimsPrincipal(new GenericIdentity(userName));
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
+            userService.Setup(x => x.GetUser(userName, userName))
+                .ReturnsAsync(new TegetgramUserDTO { UserName = userName });
 
             OkObjectResult result = await controller.Get(userName) as OkObjectResult;
 
-            userService.Verify(x => x.GetUser(userName, userName));
             Assert.NotNull(result);
             Assert.NotNull(result.Value);
         }
@@ -48,7 +63,6 @@ namespace Tegetgram.Tests
                 SecretKey = "myverysecretkeyofsecrets",
                 Issuer = "theissuer"
             });
-
             var userStore = new Mock<IUserStore<ApiUser>>();
             var userManager = new Mock<UserManager<ApiUser>>(userStore.Object, null, null, null, null, null, null, null, null);
             var contextAccessor = new Mock<IHttpContextAccessor>();
@@ -81,7 +95,6 @@ namespace Tegetgram.Tests
                 SecretKey = "myverysecretkeyofsecrets",
                 Issuer = "theissuer"
             });
-
             var userStore = new Mock<IUserStore<ApiUser>>();
             var userManager = new Mock<UserManager<ApiUser>>(userStore.Object, null, null, null, null, null, null, null, null);
             var contextAccessor = new Mock<IHttpContextAccessor>();
@@ -92,7 +105,7 @@ namespace Tegetgram.Tests
             var userService = new Mock<IUserService>();
 
             var controller = new UsersController(userManager.Object, signInManager.Object, userService.Object, null, options);
-            OkObjectResult result = await controller.Get(credentials) as OkObjectResult;
+            OkObjectResult result = await controller.Post(credentials) as OkObjectResult;
 
             userService.Verify(x => x.GetUser(credentials.UserName, credentials.UserName));
             Assert.NotNull(result);
@@ -102,12 +115,25 @@ namespace Tegetgram.Tests
         [Fact]
         public async Task Block_Happy()
         {
+            IOptions<JWTSettings> options = Options.Create(new JWTSettings
+            {
+                SecretKey = "myverysecretkeyofsecrets",
+                Issuer = "theissuer"
+            });
+            var userStore = new Mock<IUserStore<ApiUser>>();
+            var userManager = new Mock<UserManager<ApiUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            var contextAccessor = new Mock<IHttpContextAccessor>();
+            var userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<ApiUser>>();
+            var signInManager = new Mock<SignInManager<ApiUser>>(userManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null);
             var userService = new Mock<IUserService>();
+
+            var controller = new UsersController(userManager.Object, signInManager.Object, userService.Object, null, options);
             var userName = "TegetTest";
-            var user = new GenericPrincipal(new GenericIdentity(userName), new string[] { });
-            var httpContext = new DefaultHttpContext() { User = user };
-            var controllerContext = new ControllerContext() { HttpContext = httpContext };
-            var controller = new UsersController(null, null, userService.Object, null, null) { ControllerContext = controllerContext };
+            var user = new ClaimsPrincipal(new GenericIdentity(userName));
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
 
             NoContentResult result = await controller.Block(userName) as NoContentResult;
 
@@ -118,16 +144,29 @@ namespace Tegetgram.Tests
         [Fact]
         public async Task Unblock_Happy()
         {
+            IOptions<JWTSettings> options = Options.Create(new JWTSettings
+            {
+                SecretKey = "myverysecretkeyofsecrets",
+                Issuer = "theissuer"
+            });
+            var userStore = new Mock<IUserStore<ApiUser>>();
+            var userManager = new Mock<UserManager<ApiUser>>(userStore.Object, null, null, null, null, null, null, null, null);
+            var contextAccessor = new Mock<IHttpContextAccessor>();
+            var userPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<ApiUser>>();
+            var signInManager = new Mock<SignInManager<ApiUser>>(userManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null);
             var userService = new Mock<IUserService>();
+
+            var controller = new UsersController(userManager.Object, signInManager.Object, userService.Object, null, options);
             var userName = "TegetTest";
-            var user = new GenericPrincipal(new GenericIdentity(userName), new string[] { });
-            var httpContext = new DefaultHttpContext() { User = user };
-            var controllerContext = new ControllerContext() { HttpContext = httpContext };
-            var controller = new UsersController(null, null, userService.Object, null, null) { ControllerContext = controllerContext };
+            var user = new ClaimsPrincipal(new GenericIdentity(userName));
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
 
-            NoContentResult result = await controller.Block(userName) as NoContentResult;
+            NoContentResult result = await controller.Unblock(userName) as NoContentResult;
 
-            userService.Verify(x => x.BlockUser(userName, userName));
+            userService.Verify(x => x.UnblockUser(userName, userName));
             Assert.NotNull(result);
         }
     }
