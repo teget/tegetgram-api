@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Data", "Tegetgram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Api", "Tegetgram.Api\Tegetgram.Api.csproj", "{66E3CB8B-1451-4C7C-A528-004585EB532B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tegetgram.Tests", "Tegetgram.Tests\Tegetgram.Tests.csproj", "{3D34534E-53CF-44C1-86AF-1BF32E16DADA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66E3CB8B-1451-4C7C-A528-004585EB532B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D34534E-53CF-44C1-86AF-1BF32E16DADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D34534E-53CF-44C1-86AF-1BF32E16DADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D34534E-53CF-44C1-86AF-1BF32E16DADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D34534E-53CF-44C1-86AF-1BF32E16DADA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
