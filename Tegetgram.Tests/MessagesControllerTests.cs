@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Tegetgram.Api.Controllers;
+using Tegetgram.Api.RequestModels;
 using Tegetgram.Services.DTOs;
 using Tegetgram.Services.Interfaces;
 using Xunit;
@@ -53,6 +54,30 @@ namespace Tegetgram.Tests
 
             Assert.NotNull(result);
             Assert.NotNull(result.Value);
+        }
+
+        [Fact]
+        public async Task SendMessage_Happy()
+        {
+            var message = new MessageRequestModel
+            {
+                Text = "banaismailde",
+                ToUserName = "ismail"
+            };
+
+            var messageService = new Mock<IMessageService>();
+            var controller = new MessagesController(messageService.Object);
+            var userName = "TegetTest";
+            var user = new ClaimsPrincipal(new GenericIdentity(userName));
+            controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext() { User = user }
+            };
+
+            OkResult result = await controller.Post(message) as OkResult;
+
+            messageService.Verify(x => x.SendMessage(userName, message.ToUserName, message.Text));
+            Assert.NotNull(result);
         }
     }
 }
